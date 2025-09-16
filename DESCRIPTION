@@ -1,0 +1,50 @@
+Package: rcompendium
+Title: Generic R Compendium Template
+Version: 0.0.0.9000
+Authors@R: c(person(given = "Barry", family = "Brook", role = c("aut","cre")))
+Description: A reproducible, generic R compendium template using 'renv',
+    'targets', and 'Quarto'. It is structured as an R package so it can be
+    loaded with 'devtools' or 'pkgload' and used in a 'targets' pipeline.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 4.5)
+Imports:
+    targets,
+    tarchetypes,
+    dplyr,
+    readr,
+    purrr,
+    tidyr,
+    tibble,
+    stringr,
+    config,
+    qs,
+    lgr,
+    progressr,
+    yaml,
+    checkmate,
+    janitor,
+    dotenv,
+    here,
+    rlang,
+    cli,
+    import
+Suggests:
+    testthat,
+    lintr,
+    styler,
+    quarto,
+    roxygen2,
+    rcmdcheck,
+    devtools,
+    future,
+    future.batchtools,
+    pak,
+    renv,
+    pkgdown,
+    knitr,
+    rmarkdown
+Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
