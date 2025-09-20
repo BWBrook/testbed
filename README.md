@@ -9,6 +9,8 @@ Generic R compendium template for reproducible projects using renv, targets, and
  - Vignettes under `vignettes/`
  - Package site with `pkgdown` (configured for `docs/pkgdown/`)
 
+Clone and use as a basis for data projects in R.
+
 Quick start (in RStudio Console):
 
 ```r
