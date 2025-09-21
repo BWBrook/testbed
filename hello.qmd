@@ -1,0 +1,10 @@
+---
+title: "Hello Quarto"
+format: html
+---
+
+A quick plot:
+
+```{r}
+plot(1:10)
+```
