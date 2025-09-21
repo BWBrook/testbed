@@ -12,7 +12,7 @@ read_manifest <- function(manifest_path) {
   import::from("dplyr", mutate)
   import::from("tibble", tibble)
   import::from("stringr", str_trim)
-  import::from("checkmate", assert_subset, assert_names, any_string, assert_file_exists)
+  import::from("checkmate", assert_subset, assert_names, assert_file_exists)
   import::from("cli", cli_warn, cli_inform)
   import::from("rlang", abort)
 
