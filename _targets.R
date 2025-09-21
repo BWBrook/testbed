@@ -82,5 +82,31 @@ list(
     },
     format = "file",
     description = "Rendered Quarto report artifact."
+  ),
+
+  # Missing files diagnostic (should be empty when inputs exist)
+  targets::tar_target(
+    missing_files,
+    manifest_missing_files(raw_manifest),
+    description = "Manifest entries lacking files on disk."
+  ),
+
+  # Numeric profile of combined CSV inputs
+  targets::tar_target(
+    data_profile,
+    summarize_numeric_columns(combined_data),
+    description = "Summary statistics for numeric columns in combined data."
+  ),
+
+  # Export combined data to a CSV artifact for downstream consumption
+  targets::tar_target(
+    combined_export,
+    {
+      out <- "outputs/data/combined_data.csv"
+      write_combined_data(combined_data, out)
+      out
+    },
+    format = "file",
+    description = "CSV export of combined manifest data."
   )
 )

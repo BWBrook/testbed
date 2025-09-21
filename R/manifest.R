@@ -36,7 +36,16 @@ read_manifest <- function(manifest_path) {
     )
   }
 
-  dat <- read_csv(csv_path, show_col_types = FALSE, progress = FALSE)
+  dat <- tryCatch(
+    readr::read_csv(csv_path, show_col_types = FALSE, progress = FALSE),
+    error = function(err) {
+      if (grepl("iconvlist", conditionMessage(err), fixed = TRUE)) {
+        return(utils::read.csv(csv_path, stringsAsFactors = FALSE, check.names = FALSE))
+      }
+      stop(err)
+    }
+  )
+  dat <- tibble::as_tibble(dat)
   # Validate minimal schema
   needed <- c("id", "path")
   assert_names(colnames(dat), must.include = needed)

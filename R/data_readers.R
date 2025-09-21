@@ -25,12 +25,20 @@ combine_manifest_csvs <- function(manifest) {
   }
 
   dfs <- purrr::map(paths, function(p) {
-    dat <- try(readr::read_csv(p, show_col_types = FALSE, progress = FALSE), silent = TRUE)
-    if (inherits(dat, "try-error")) {
-      cli::cli_warn(sprintf("Failed to read CSV: %s", basename(p)))
+    dat <- tryCatch(
+      readr::read_csv(p, show_col_types = FALSE, progress = FALSE),
+      error = function(err) {
+        if (grepl("iconvlist", conditionMessage(err), fixed = TRUE)) {
+          return(utils::read.csv(p, stringsAsFactors = FALSE, check.names = FALSE))
+        }
+        cli::cli_warn(sprintf("Failed to read CSV: %s", basename(p)))
+        return(NULL)
+      }
+    )
+    if (is.null(dat)) {
       return(NULL)
     }
-    dat
+    tibble::as_tibble(dat)
   }) |> purrr::compact()
 
   if (length(dfs) == 0L) {

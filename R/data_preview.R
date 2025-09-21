@@ -29,11 +29,20 @@ preview_manifest <- function(manifest, n_max = 100L) {
     if (!grepl("\\.csv$", tolower(rel))) {
       return(tibble::tibble(id = id, path = rel, exists = TRUE, n_rows = NA_integer_, n_cols = NA_integer_))
     }
-    dat <- try(readr::read_csv(p, n_max = n_max, show_col_types = FALSE, progress = FALSE), silent = TRUE)
-    if (inherits(dat, "try-error")) {
-      cli_warn(sprintf("Failed to read CSV for preview: %s", rel))
+    dat <- tryCatch(
+      readr::read_csv(p, n_max = n_max, show_col_types = FALSE, progress = FALSE),
+      error = function(err) {
+        if (grepl("iconvlist", conditionMessage(err), fixed = TRUE)) {
+          return(utils::read.csv(p, stringsAsFactors = FALSE, check.names = FALSE))
+        }
+        cli_warn(sprintf("Failed to read CSV for preview: %s", rel))
+        return(NULL)
+      }
+    )
+    if (is.null(dat)) {
       return(tibble::tibble(id = id, path = rel, exists = TRUE, n_rows = NA_integer_, n_cols = NA_integer_))
     }
+    dat <- tibble::as_tibble(dat)
     tibble::tibble(id = id, path = rel, exists = TRUE, n_rows = nrow(dat), n_cols = ncol(dat))
   })
 
