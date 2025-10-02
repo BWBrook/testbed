@@ -25,7 +25,7 @@ data-raw/cache/
 inst/extdata/*.zip
 inst/extdata/*.gz
 docs/*.md
-a*.md
+AGENTS.md
 
 # build / checks
 .Rcheck/
